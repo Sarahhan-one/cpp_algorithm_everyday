@@ -1,0 +1,17 @@
+# VSCode folders
+.vscode/
+.vs/
+
+# Exclude all files by default
+*
+
+# But include directories
+!*/
+
+# Only include .c files
+!*.c
+!practice*/*.c
+
+# Keep .gitignore and README
+!.gitignore
+!README.md
