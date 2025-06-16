@@ -1,17 +1,11 @@
-# VSCode folders
-.vscode/
+# Visual Studio folders
 .vs/
+.vscode/
 
-# Exclude all files by default
-*
+# Build files
+*.exe
+*.obj
+*.o
 
-# But include directories
-!*/
-
-# Only include .c files
-!*.c
-!practice*/*.c
-
-# Keep .gitignore and README
-!.gitignore
-!README.md
+# Text files
+*.txt
