@@ -11,6 +11,7 @@ using namespace std;
 //find the all possabilities that satifies the conditions
 
 //1 3 4 7 10
+
 int main() {
     int N; 
     vector<int> leaves(N); 
