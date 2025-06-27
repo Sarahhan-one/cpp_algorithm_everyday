@@ -37,13 +37,12 @@ int main() {
             int nx = x + dirs[i].first; 
             int ny = y + dirs[i].second; 
 
-            for (int j = 0; j < 3; j++) {//k can be either 1, 2, 3
-                if (nx < 0 || ny < 0 || nx >= M || ny >= N) continue; //boundary check 
-                if (i+1 != dir) continue; //direction check
-                
-                    if (map[nx+j][ny+j] == 0) {
+            if (nx < 0 || ny < 0 || nx >= M || ny >= N) continue; //boundary check 
+            if (i+1 != dir) continue; //direction check
+            for (int j = 0; j < 3; j++) { //k can be either 1, 2, 3
+                if (map[nx+j][ny+j] == 0) {
 
-                    } 
+                } 
             }
 
         }
