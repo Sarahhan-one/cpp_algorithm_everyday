@@ -1,59 +1,67 @@
 #include <iostream>
 #include <vector>
 #include <queue> 
+#include <limits.h>
 using namespace std; 
 
-int ans = 0; 
-int N, K, W; 
-vector<int> constructionTime(N+1);
-
-void findMin(queue<int> q) {//pass the copy
-    int temp = 0;
-    while (!q.empty()) {
-        int node = q.front();
-        q.pop();
-
-        temp = min(temp, constructionTime[node]);
-        cout << temp << ' ';
-    }
-    ans += temp;
-}
 
 
 int main() {
-    cin >> N >> K; 
+    int T, N, K, W; 
 
-    for (int i = 1; i <= N; i++) {
-        cin >> constructionTime[i];
+    cin >> T;
+    while (T--) {
+        int ans = 0; 
+        cin >> N >> K; 
+
+        vector<int> constructionTime(N+1);
+        for (int i = 1; i <= N; i++) {
+            cin >> constructionTime[i];
+        }
+        
+        vector<int> degree(N+1, 0);
+        vector<vector<int>> adj(N+1);
+        for (int i = 0; i < K; i++) {
+            int nodeOne, nodeTwo; 
+            cin >> nodeOne >> nodeTwo; 
+            adj[nodeOne].push_back(nodeTwo);
+            degree[nodeTwo]++;
+        }
+        
+        cin >> W;
+
+        queue<int> q; 
+        int nodeCnt = 0;
+        for (int i = 1; i <= N; i++) {
+            if (degree[i] == 0) { 
+                q.push(i); nodeCnt++; 
+            }
+        }
+        
+        int maxTime = 0;
+        while (!q.empty()) {
+            int currNode = q.front();
+            q.pop(); nodeCnt--; 
+            
+            if (currNode == W) {
+                ans += constructionTime[currNode]; 
+                break;
+            }
+
+            maxTime = max(maxTime, constructionTime[currNode]);
+
+            for (int& adjNode : adj[currNode]) {
+                degree[adjNode]--;
+                if (degree[adjNode] == 0) { 
+                    q.push(adjNode); nodeCnt++;
+                }
+            }  
+            
+            if (nodeCnt == 0) {
+                ans += maxTime;
+                maxTime = 0;
+            }
+        }
+        cout << ans << '\n';
     }
-    cin >> W;
-    
-    vector<int> degree(N+1, 0);
-    vector<vector<int>> adj(N+1);
-    for (int i = 0; i < K; i++) {
-        int nodeOne, nodeTwo; 
-        cin >> nodeOne >> nodeTwo; 
-        adj[nodeOne].push_back(nodeTwo);
-        degree[nodeTwo]++;
-    }
-
-    queue<int> q; 
-    int nodeCnt = 0;
-    for (int i = 1; i <= N; i++) {
-        if (degree[i] == 0) { q.push(i); nodeCnt++; }
-    }
-    
-    while (!q.empty()) {
-        if (--nodeCnt == 0) findMin(q);
-
-        int currNode = q.front();
-        q.pop();
-
-        for (int& adjNode : adj[currNode]) {
-            degree[adjNode]--;
-            if (degree[adjNode] == 0) { q.push(adjNode); nodeCnt++; }
-        }  
-    }
-
-    cout << ans;
 }
