@@ -11,7 +11,7 @@ bool boundaryCheck(int R, int C) {
     return true;
 }
 
-void cleaning(int& roomCleaned, vector<vector<int>>& grid, int currR, int currC, int currD, bool& allCleaned) {
+void cleaning(int& roomCleaned, vector<vector<int>>& grid, int currR, int currC, int currD) {
     
     // cout << currR << " " << currC << " " << currD << endl;
     
@@ -30,22 +30,18 @@ void cleaning(int& roomCleaned, vector<vector<int>>& grid, int currR, int currC,
         
         if (!boundaryCheck(nextR, nextC)) continue;
         if (grid[nextR][nextC] == 0) {
-            cleaning(roomCleaned, grid, nextR, nextC, nextD, allCleaned); 
-            allCleaned = false;
-            break;
+            cleaning(roomCleaned, grid, nextR, nextC, nextD); 
+            return;
         }
     }
 
-    if (allCleaned) {
-        allCleaned = true;
+    int moveD = (currD + 2) % 4; // opposite direciton - don't pass this as robot's direction
+    nextR = currR + dr[moveD];
+    nextC = currC + dc[moveD];
 
-        int moveD = (currD + 2) % 4; // opposite direciton - don't pass this as robot's direction
-        nextR = currR + dr[moveD];
-        nextC = currC + dc[moveD];
+    if (boundaryCheck(nextR, nextC) && grid[nextR][nextC] != 1) cleaning(roomCleaned, grid, nextR, nextC, currD);
+    return;
 
-        if (boundaryCheck(nextR, nextC) && grid[nextR][nextC] != 1) cleaning(roomCleaned, grid, nextR, nextC, currD, allCleaned);
-        else return;
-    }
 }   
 
 int main() {
@@ -61,8 +57,7 @@ int main() {
     }
 
     int roomCleaned = 0;
-    bool alreadyCleaned = true;
-    cleaning(roomCleaned, grid, startR, startC, startD, alreadyCleaned);
+    cleaning(roomCleaned, grid, startR, startC, startD);
 
     cout << roomCleaned;
 } 
